@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="sidebar.css" />
+    <title>sidebar</title>
+  </head>
+  <style></style>
+  <body>
+    <div class="drawer-icon">
+      <div class="drawer-icon-div"></div>
+      <div class="drawer-icon-div"></div>
+      <div class="drawer-icon-div"></div>
+      <div class="drawer-icon-div"></div>
+      <div class="drawer-icon-div"></div>
+      <div class="drawer-icon-div"></div>
+      <div class="drawer-icon-div"></div>
+      <div class="drawer-icon-div"></div>
+      <div class="drawer-icon-div"></div>
+    </div>
+    <div class="sidebar">
+    
+        <svg class="drawer-closer-close" viewBox="0 0 100 60">
+            <defs>
+              <mask id="mask" x="0" y="0" width="100" height="100">
+                <rect x="0" y="0" width="100" height="100" fill="#fff"/>
+                <text  text-anchor="middle"  font-size="40" x="50" y="60" dy="5">✖</text>
+              </mask>
+            </defs>
+            <rect x="5" y="5" width="100" height="100" mask="url(#mask)" fill-opacity="1"/>    
+          </svg>
+    
+      <ul class="sidebar-list">
+        <li class="sidebar-list-item"><i class="fa fa-cutlery"></i>Home</li>
+        <li class="sidebar-list-item">
+          <i class="fas fa-table-columns"></i>Dashboard
+        </li>
+        <li class="sidebar-list-item"><i class="fas fa-gear"></i>Settings</li>
+        <li class="sidebar-list-item"><i class="far fa-plus"></i>Create</li>
+        <li class="sidebar-list-item"><i class="far fa-user"></i>Profile</li>
+        <li class="sidebar-list-item">
+          <i class="fas fa-bell"></i>Notificatoin
+        </li>
+        <li class="sidebar-list-item"><i class="fas fa-car"></i>Products</li>
+        <li class="sidebar-list-item"><i class="fas fa-user"></i>Account</li>
+      </ul>
+    </div>
+
+    <div style="text-align: center;">
+djljlijlj jgkj
+    </div>
+  </body>
+
+  <script>
+ 
+// drawer button
+    document.querySelector(".drawer-icon").addEventListener("click", () => {
+      drawerContainer.classList.toggle("shrink"); // Toggles shrink effect on click
+    });
+    document.querySelector(".drawer-icon").addEventListener("click", () => {
+      document.querySelector(".sidebar").classList.toggle("opened");
+    });
+
+    // drawer close btn
+    document.querySelector(".drawer-closer-close").addEventListener("click", () => {
+      drawerContainer.classList.toggle("shrink"); // Toggles shrink effect on click
+    });
+    document.querySelector(".drawer-closer-close").addEventListener("click", () => {
+      document.querySelector(".sidebar").classList.toggle("opened");
+    });
+  </script>
+</html>
