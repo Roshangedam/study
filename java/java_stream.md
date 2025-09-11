@@ -1,5 +1,4 @@
 # Java Streams Interview Questions
-## Easy to Advanced Level | 3+ Years Experience
 
 ---
 
