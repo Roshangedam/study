@@ -60,6 +60,31 @@
     - [File Processing](#file-processing)
     - [Database Operations](#database-operations)
 
+11. [Stream Terminology](#stream-terminology)
+    - [Key Terms and Interfaces](#key-terms-and-interfaces)
+
+---
+
+## Stream Terminology
+
+### Key Terms and Interfaces
+
+Understanding the terminology used in Java Streams is essential for mastering this API. Here's a quick reference of important terms:
+
+| **Term**           | **Type / Interface** | **Function**                                     | **Use Case Example**                               |
+| ------------------ | -------------------- | ------------------------------------------------ | -------------------------------------------------- |
+| **Mapper**         | `Function<T, R>`     | Transforms each element                          | `map(s -> s.length())` — converts string to length |
+| **Downstream**     | `Collector`          | A nested collector used inside another collector | `groupingBy(..., counting())`                      |
+| **Accumulator**    | `BiConsumer<A, T>`   | Adds an element to a mutable container           | Adding elements to a `List`                        |
+| **Supplier**       | `Supplier<A>`        | Creates a new empty container                    | `() -> new ArrayList<>()`                          |
+| **Finisher**       | `Function<A, R>`     | Converts the container to the final result       | Making an immutable collection                     |
+| **Combiner**       | `BinaryOperator<A>`  | Combines two partial results                     | Used in parallel streams                           |
+| **Predicate**      | `Predicate<T>`       | Checks if a condition is true or false           | `filter(s -> s.startsWith("a"))`                   |
+| **Comparator**     | `Comparator<T>`      | Compares two elements                            | Sorting, or finding min/max                        |
+| **BinaryOperator** | `BinaryOperator<T>`  | Combines two elements of the same type           | `reduce(Integer::sum)`                             |
+| **Collector**      | `Interface`          | Defines how to collect elements from a stream    | `Collectors.toList()`                              |
+
+
 ---
 
 ## Introduction to Streams
