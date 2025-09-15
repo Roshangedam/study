@@ -36,8 +36,19 @@
    - [findFirst() and findAny()](#findfirst-and-findany)
 
 6. [Collectors](#collectors)
+   - [toList()](#tolist) - For collecting elements into a List
+   - [toSet()](#toset) - For collecting elements into a Set with duplicates removed
+   - [toMap()](#tomap) - For transforming elements into key-value pairs
+   - [joining()](#joining) - For concatenating elements with various delimiter options
+   - [counting()](#counting) - For counting stream elements
+   - [summarizingInt/Long/Double()](#summarizingintlongdouble) - For obtaining statistics on numeric data
+   - [mapping()](#mapping) - For transforming elements before collection
+   - [groupingBy()](#groupingby) - For classifying elements into groups
+   - [partitioningBy()](#partitioningby) - For splitting elements based on a predicate
+   - [reducing()](#reducing) - For combining elements into a single result
+   <!-- - [collectingAndThen()](#collectingandthen) - For performing additional transformations after collection
    - [Basic Collectors](#basic-collectors)
-   - [Grouping and Partitioning](#grouping-and-partitioning)
+   - [Grouping and Partitioning](#grouping-and-partitioning) -->
    - [Custom Collectors](#custom-collectors)
 
 7. [Parallel Streams](#parallel-streams)
@@ -83,7 +94,7 @@ Understanding the terminology used in Java Streams is essential for mastering th
 | **Comparator**     | `Comparator<T>`      | Compares two elements                            | Sorting, or finding min/max                        |
 | **BinaryOperator** | `BinaryOperator<T>`  | Combines two elements of the same type           | `reduce(Integer::sum)`                             |
 | **Collector**      | `Interface`          | Defines how to collect elements from a stream    | `Collectors.toList()`                              |
-
+| **Classifier**     | `Function<T, K>`    | Extracts the key for grouping elements           | `groupingBy(Person::getDepartment)`              |
 
 ---
 
@@ -603,6 +614,307 @@ String result = names.stream()
 
 Collectors are used with the `collect()` terminal operation to transform elements into a different form.
 
+### Collector Methods in Detail
+
+#### toList()
+
+For collecting elements into a List:
+
+```java
+List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
+
+// Collect stream elements into a List
+List<String> namesList = names.stream()
+    .filter(name -> name.length() > 3)
+    .collect(Collectors.toList());
+// Result: [Alice, Charlie]
+```
+
+#### toSet()
+
+For collecting elements into a Set with duplicates removed:
+
+```java
+List<String> names = Arrays.asList("Alice", "Bob", "Alice", "Charlie");
+
+// Collect stream elements into a Set (removes duplicates)
+Set<String> uniqueNames = names.stream()
+    .collect(Collectors.toSet());
+// Result: [Alice, Bob, Charlie]
+```
+
+#### toMap()
+
+For transforming elements into key-value pairs:
+
+```java
+List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
+
+// Basic toMap with key and value functions
+Map<String, Integer> nameLengthMap = names.stream()
+    .collect(Collectors.toMap(
+        Function.identity(),  // Key: name itself
+        String::length        // Value: length of name
+    ));
+// Result: {Alice=5, Bob=3, Charlie=7}
+
+// toMap with merge function to handle duplicate keys
+List<Person> people = Arrays.asList(
+    new Person("IT", "Alice", 80000),
+    new Person("IT", "Bob", 70000),
+    new Person("HR", "Charlie", 75000)
+);
+
+Map<String, Person> highestPaidByDept = people.stream()
+    .collect(Collectors.toMap(
+        Person::getDepartment,          // Key: department
+        Function.identity(),            // Value: person object
+        (existing, replacement) ->      // Merge function for duplicates
+            existing.getSalary() > replacement.getSalary() 
+                ? existing : replacement
+    ));
+// Result: {IT=Person(Alice, 80000), HR=Person(Charlie, 75000)}
+```
+
+#### joining()
+
+For concatenating elements with various delimiter options:
+
+```java
+List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
+
+// Basic joining with delimiter
+String joined = names.stream()
+    .collect(Collectors.joining(", "));
+// Result: "Alice, Bob, Charlie"
+
+// Joining with prefix and suffix
+String joinedWithBrackets = names.stream()
+    .collect(Collectors.joining(", ", "[", "]"));
+// Result: "[Alice, Bob, Charlie]"
+
+// Joining with map transformation
+String uppercaseJoined = names.stream()
+    .map(String::toUpperCase)
+    .collect(Collectors.joining(" | "));
+// Result: "ALICE | BOB | CHARLIE"
+```
+
+#### counting()
+
+For counting stream elements:
+
+```java
+List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
+
+// Count elements in a stream
+long count = names.stream()
+    .collect(Collectors.counting());
+// Result: 3
+
+// Counting with filtering
+long countStartingWithA = names.stream()
+    .filter(name -> name.startsWith("A"))
+    .collect(Collectors.counting());
+// Result: 1
+```
+
+#### summarizingInt/Long/Double()
+
+For obtaining statistics on numeric data:
+
+```java
+List<Person> people = Arrays.asList(
+    new Person("Alice", 25),
+    new Person("Bob", 30),
+    new Person("Charlie", 35)
+);
+
+// Get statistics on ages
+IntSummaryStatistics ageStats = people.stream()
+    .collect(Collectors.summarizingInt(Person::getAge));
+
+// Access individual statistics
+long count = ageStats.getCount();       // 3
+long sum = ageStats.getSum();           // 90
+int min = ageStats.getMin();            // 25
+int max = ageStats.getMax();            // 35
+double average = ageStats.getAverage(); // 30.0
+
+// Similarly for double values
+DoubleSummaryStatistics salaryStats = people.stream()
+    .collect(Collectors.summarizingDouble(Person::getSalary));
+```
+
+#### mapping()
+
+For transforming elements before collection:
+
+```java
+List<Person> people = Arrays.asList(
+    new Person("Alice", 25),
+    new Person("Bob", 30),
+    new Person("Charlie", 35)
+);
+
+// Extract and collect names
+List<String> names = people.stream()
+    .collect(Collectors.mapping(
+        Person::getName,
+        Collectors.toList()
+    ));
+// Result: [Alice, Bob, Charlie]
+
+// Transform and join names
+String uppercaseNames = people.stream()
+    .collect(Collectors.mapping(
+        person -> person.getName().toUpperCase(),
+        Collectors.joining(", ")
+    ));
+// Result: "ALICE, BOB, CHARLIE"
+```
+
+#### groupingBy()
+
+For classifying elements into groups:
+
+```java
+List<Person> people = Arrays.asList(
+    new Person("Alice", 25, "IT"),
+    new Person("Bob", 30, "HR"),
+    new Person("Charlie", 35, "IT"),
+    new Person("Dave", 40, "HR")
+);
+
+// Basic grouping by department
+Map<String, List<Person>> byDepartment = people.stream()
+    .collect(Collectors.groupingBy(Person::getDepartment));
+// Result: {IT=[Alice, Charlie], HR=[Bob, Dave]}
+
+// Grouping with downstream collector
+Map<String, Long> countByDepartment = people.stream()
+    .collect(Collectors.groupingBy(
+        Person::getDepartment,
+        Collectors.counting()
+    ));
+// Result: {IT=2, HR=2}
+
+// Multi-level grouping
+Map<String, Map<Integer, List<Person>>> byDeptAndAge = people.stream()
+    .collect(Collectors.groupingBy(
+        Person::getDepartment,
+        Collectors.groupingBy(
+            person -> person.getAge() / 10 * 10  // Age groups by decade
+        )
+    ));
+// Result: {IT={20=[Alice], 30=[Charlie]}, HR={30=[Bob], 40=[Dave]}}
+```
+
+#### partitioningBy()
+
+For splitting elements based on a predicate:
+
+```java
+List<Person> people = Arrays.asList(
+    new Person("Alice", 25),
+    new Person("Bob", 30),
+    new Person("Charlie", 35),
+    new Person("Dave", 40)
+);
+
+// Basic partitioning by age
+Map<Boolean, List<Person>> partitionedByAge = people.stream()
+    .collect(Collectors.partitioningBy(p -> p.getAge() > 30));
+// Result: {false=[Alice, Bob], true=[Charlie, Dave]}
+
+// Partitioning with downstream collector
+Map<Boolean, Long> countByAgeGroup = people.stream()
+    .collect(Collectors.partitioningBy(
+        p -> p.getAge() > 30,
+        Collectors.counting()
+    ));
+// Result: {false=2, true=2}
+
+// Partitioning with mapping
+Map<Boolean, List<String>> namesByAgeGroup = people.stream()
+    .collect(Collectors.partitioningBy(
+        p -> p.getAge() > 30,
+        Collectors.mapping(Person::getName, Collectors.toList())
+    ));
+// Result: {false=[Alice, Bob], true=[Charlie, Dave]}
+```
+
+#### reducing()
+
+For combining elements into a single result:
+
+```java
+List<Person> people = Arrays.asList(
+    new Person("Alice", 25, 50000),
+    new Person("Bob", 30, 60000),
+    new Person("Charlie", 35, 70000)
+);
+
+// Sum of salaries
+Optional<Integer> totalSalary = people.stream()
+    .map(Person::getSalary)
+    .collect(Collectors.reducing(Integer::sum));
+// Result: Optional[180000]
+
+// With identity value (no Optional result)
+int totalSalaryWithIdentity = people.stream()
+    .collect(Collectors.reducing(
+        0,                  // Identity value
+        Person::getSalary,  // Value mapper
+        Integer::sum        // Reducer function
+    ));
+// Result: 180000
+
+// Find person with highest salary
+Optional<Person> highestPaid = people.stream()
+    .collect(Collectors.reducing(
+        (p1, p2) -> p1.getSalary() > p2.getSalary() ? p1 : p2
+    ));
+// Result: Optional[Person(Charlie, 35, 70000)]
+```
+
+#### collectingAndThen()
+
+For performing additional transformations after collection:
+
+```java
+List<Person> people = Arrays.asList(
+    new Person("Alice", 25),
+    new Person("Bob", 30),
+    new Person("Charlie", 35)
+);
+
+// Collect to list and make it unmodifiable
+List<String> names = people.stream()
+    .map(Person::getName)
+    .collect(Collectors.collectingAndThen(
+        Collectors.toList(),
+        Collections::unmodifiableList
+    ));
+// Result: Unmodifiable list [Alice, Bob, Charlie]
+
+// Find the oldest person
+Person oldest = people.stream()
+    .collect(Collectors.collectingAndThen(
+        Collectors.maxBy(Comparator.comparing(Person::getAge)),
+        optional -> optional.orElseThrow(() -> new IllegalStateException("No people found"))
+    ));
+// Result: Person(Charlie, 35)
+
+// Count and convert to string
+String countStr = people.stream()
+    .collect(Collectors.collectingAndThen(
+        Collectors.counting(),
+        count -> "There are " + count + " people"
+    ));
+// Result: "There are 3 people"
+```
+<!-- 
 ### Basic Collectors
 
 ```java
@@ -693,7 +1005,7 @@ Map<String, List<String>> departmentNames = people.stream()
 Map<Boolean, List<Person>> partitionedByAge = people.stream()
     .collect(Collectors.partitioningBy(p -> p.getAge() > 30));
 // Result: {false=[Alice, Bob], true=[Charlie, Dave, Eve]}
-```
+``` -->
 
 ### Custom Collectors
 
