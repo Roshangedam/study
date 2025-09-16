@@ -47,9 +47,17 @@
 
 23. [**Q23: Performance optimization techniques.**](#q23-performance-optimization-techniques)
 24. [**Q24: When NOT to use streams.**](#q24-when-not-to-use-streams)
+
+**Expert Level Questions**
+
 25. [**Q25: Create a custom stream implementation.**](#q25-create-a-custom-stream-implementation)
 26. [**Q26: Implement a streaming data processor with backpressure handling.**](#q26-implement-a-streaming-data-processor-with-backpressure-handling)
 
+**Quick Reference & Cheat Sheet**
+
+
+- [**Stream Operations Summary**](#stream-operations-summary)
+- [**Performance Guidelines**](#performance-guidelines)
 ---
 
 ## 🌊 **Stream Basics - Easy Level**
