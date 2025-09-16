@@ -43,6 +43,7 @@
    - [counting()](#counting) - For counting stream elements
    - [summarizingInt/Long/Double()](#summarizingintlongdouble) - For obtaining statistics on numeric data
    - [mapping()](#mapping) - For transforming elements before collection
+   - [flatMapping()](#flatmapping) - For flattens nested structures into a single stream before collection.
    - [groupingBy()](#groupingby) - For classifying elements into groups
    - [partitioningBy()](#partitioningby) - For splitting elements based on a predicate
    - [reducing()](#reducing) - For combining elements into a single result
@@ -73,6 +74,8 @@
 
 11. [Stream Terminology](#stream-terminology)
     - [Key Terms and Interfaces](#key-terms-and-interfaces)
+
+12. [Stream Operations Cheat Sheet](#cheat-sheet)
 
 ---
 
@@ -773,6 +776,42 @@ String uppercaseNames = people.stream()
     ));
 // Result: "ALICE, BOB, CHARLIE"
 ```
+#### flatMapping()
+
+when the transformation function returns a stream or collection. This flattens nested structures into a single stream before collection.
+
+```java
+class Order {
+    String customer;
+    List<String> items;
+    // constructors, getters...
+}
+
+List<Order> orders = Arrays.asList(
+    new Order("Alice", Arrays.asList("laptop", "mouse")),
+    new Order("Bob", Arrays.asList("keyboard")),
+    new Order("Alice", Arrays.asList("monitor", "cable"))
+);
+
+// Flatten items by customer (this was missing in original)
+Map<String, List<String>> allItemsByCustomer = orders.stream()
+    .collect(Collectors.groupingBy(
+        Order::getCustomer,
+        Collectors.flatMapping(
+            order -> order.getItems().stream(),
+            Collectors.toList()
+        )
+    ));
+// {Alice=[laptop, mouse, monitor, cable], Bob=[keyboard]}
+
+// Compare with mapping() - gives nested structure
+Map<String, List<List<String>>> nestedItems = orders.stream()
+    .collect(Collectors.groupingBy(
+        Order::getCustomer,
+        Collectors.mapping(Order::getItems, Collectors.toList())
+    ));
+// {Alice=[[laptop, mouse], [monitor, cable]], Bob=[[keyboard]]}
+```
 
 #### groupingBy()
 
@@ -1460,4 +1499,44 @@ List<Order> highValueOrders = orderRepository.streamAll()
     .sorted(Comparator.comparing(Order::getOrderDate).reversed())
     .limit(100)
     .collect(Collectors.toList());
+```
+
+### cheat-sheet
+```java
+        // Create
+        Stream.of(1, 2, 3)
+        Arrays.stream(array)
+        collection.stream()
+
+        // Transform
+        .filter(predicate)
+        .map(function)
+        .flatMap(function)
+        .distinct()
+        .sorted()
+        .peek(consumer)
+        .limit(n)
+        .skip(n)
+
+        // Collect
+        .collect(toList())
+        .collect(toSet())
+        .collect(joining(", "))
+        .collect(groupingBy(classifier))
+
+        // Reduce
+        .reduce(identity, accumulator)
+        .count()
+        .min(comparator)
+        .max(comparator)
+
+        // Find
+        .findFirst()
+        .findAny()
+        .anyMatch(predicate)
+        .allMatch(predicate)
+        .noneMatch(predicate)
+
+        // Process
+        .forEach(consumer)
 ```
