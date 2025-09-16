@@ -1,5 +1,33 @@
 # Java Streams Interview Questions
 
+## Table of Contents
+1. [**Q1: What are Java Streams? Why were they introduced?**](#q1-what-are-java-streams-why-were-they-introduced)
+2. [**Q2: Explain the difference between intermediate and terminal operations.**](#q2-explain-the-difference-between-intermediate-and-terminal-operations)
+3. [**Q3: Create a stream from different sources.**](#q3-create-a-stream-from-different-sources)
+4. [**Q4: Demonstrate filter, map, and collect operations.**](#q4-demonstrate-filter-map-and-collect-operations)
+5. [**Q5: Working with flatMap - explain with examples.**](#q5-working-with-flatmap---explain-with-examples)
+6. [**Q6: Sorting with sorted() method.**](#q6-sorting-with-sorted-method)
+7. [**Q7: Different ways to collect stream results.**](#q7-different-ways-to-collect-stream-results)
+8. [**Q8: Explain reduce() operation with examples.**](#q8-explain-reduce-operation-with-examples)
+9. [**Q9: Finding elements with findFirst(), findAny(), anyMatch(), etc.**](#q9-finding-elements-with-findfirst-findany-anymatch-etc)
+10. [**Q10: Working with parallel streams - when and how to use.**](#q10-working-with-parallel-streams---when-and-how-to-use)
+11. [**Q11: Custom Collectors - create your own collector.**](#q11-custom-collectors---create-your-own-collector)
+12. [**Q12: Working with Optional and Stream integration.**](#q12-working-with-optional-and-stream-integration)
+13. [**Q13: Multi-level grouping and advanced collectors.**](#q13-multi-level-grouping-and-advanced-collectors)
+14. [**Q14: Stream operations with databases/external APIs.**](#q14-stream-operations-with-databasesexternal-apis)
+15. [**Q15: Performance optimization and best practices.**](#q15-performance-optimization-and-best-practices)
+16. [**Q16: What will be the output of this code?**](#q16-what-will-be-the-output-of-this-code)
+17. [**Q17: Fix the bugs in these stream operations.**](#q17-fix-the-bugs-in-these-stream-operations)
+18. [**Q18: Memory and performance gotchas.**](#q18-memory-and-performance-gotchas)
+19. [**Q19: Process large CSV data using streams.**](#q19-process-large-csv-data-using-streams)
+20. [**Q20: API response transformation using streams.**](#q20-api-response-transformation-using-streams)
+21. [**Q21: Complex data validation using streams.**](#q21-complex-data-validation-using-streams)
+22. [**Q22: Common mistakes to avoid with streams.**](#q22-common-mistakes-to-avoid-with-streams)
+23. [**Q23: Performance optimization techniques.**](#q23-performance-optimization-techniques)
+24. [**Q24: When NOT to use streams.**](#q24-when-not-to-use-streams)
+25. [**Q25: Create a custom stream implementation.**](#q25-create-a-custom-stream-implementation)
+26. [**Q26: Implement a streaming data processor with backpressure handling.**](#q26-implement-a-streaming-data-processor-with-backpressure-handling)
+
 ---
 
 ## 🌊 **Stream Basics - Easy Level**
