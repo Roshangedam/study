@@ -7,7 +7,7 @@ Absolutely! Here's your updated README with a **numbered Table of Contents** inc
 Welcome to the **Java Collections Guide**! This document covers the core concepts and classes of the Java Collections Framework, helping you understand how to efficiently manage groups of objects.
 
 ## Table of Contents
-
+```markdown
 1. [Introduction to Java Collections](#1-introduction-to-java-collections)
 2. [List](#2-list)
 3. [Set](#3-set)
@@ -27,7 +27,7 @@ Welcome to the **Java Collections Guide**! This document covers the core concept
 7. [Sorting and Searching](#7-sorting-and-searching)
 8. [Concurrency in Collections](#8-concurrency-in-collections)
 9. [Performance Considerations](#9-performance-considerations)
-
+```
 ---
 
 ## 1. Introduction to Java Collections
@@ -193,41 +193,3 @@ for (Map.Entry<String, List<Integer>> entry : complexMap.entrySet()) {
 
 ---
 
-
-
-Got it! You want a **clean, indented, folder-tree style Table of Contents** where subtopics are listed neatly below their parents, each on a new line, visually showing hierarchy clearly.
-
-Here’s the Table of Contents updated with that style, plus anchors to jump directly:
-
----
-
-# Java Collections Guide
-
-Welcome to the **Java Collections Guide**! This document covers the core concepts and classes of the Java Collections Framework, helping you understand how to efficiently manage groups of objects.
-
-## Table of Contents
-
-1. [Introduction to Java Collections](#1-introduction-to-java-collections)
-2. [List](#2-list)
-3. [Set](#3-set)
-4. [Map](#4-map)
-     4.1. [Key Implementations](#41-key-implementations)
-     4.2. [Common Methods](#42-common-methods)
-     4.3. [Examples](#43-examples)
-       4.3.1. [Basic Map Usage](#431-basic-map-usage)
-       4.3.2. [Traversing Map Using `entrySet()`](#432-traversing-map-using-entryset)
-       4.3.3. [Sorting a Map by Keys (Using `TreeMap`)](#433-sorting-a-map-by-keys-using-treemap)
-       4.3.4. [Sorting a Map by Values Using Streams](#434-sorting-a-map-by-values-using-streams)
-       4.3.5. [Using Stream API to Filter and Collect](#435-using-stream-api-to-filter-and-collect)
-       4.3.6. [Complex Map: `Map<Object, List<Object>>`](#436-complex-map-mapobject-listobject)
-       4.3.7. [Sorting Internal Lists in Reverse Order](#437-sorting-internal-lists-in-reverse-order)
-     4.4. [Entry Set](#44-entry-set)
-5. [Queue](#5-queue)
-6. [Deque](#6-deque)
-7. [Sorting and Searching](#7-sorting-and-searching)
-8. [Concurrency in Collections](#8-concurrency-in-collections)
-9. [Performance Considerations](#9-performance-considerations)
-
----
-
-**If you want, I can also provide the full document with this layout applied everywhere!** Would you like me to?
